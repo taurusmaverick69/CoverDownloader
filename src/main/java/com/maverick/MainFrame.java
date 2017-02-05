@@ -43,7 +43,7 @@ public class MainFrame extends JFrame {
         downloadButton.addActionListener(e -> {
             try {
                 Downloader.saveImage(urlTextField.getText());
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getClass() + System.lineSeparator() + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
