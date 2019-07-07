@@ -1,10 +1,11 @@
 package com.maverick;
 
-import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
+
+import javax.swing.*;
 
 public class MainFrame extends JFrame {
+
 
     public MainFrame() {
 
@@ -14,6 +15,8 @@ public class MainFrame extends JFrame {
         JPanel panel = new JPanel(new GridBagLayout());
         JButton downloadButton = new JButton("Download");
         urlTextField.setPreferredSize(new Dimension(200, 25));
+
+        JComboBox<Site> siteCombobox = new JComboBox<>(Site.values());
 
         setTitle("Cover Downloader");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -25,6 +28,10 @@ public class MainFrame extends JFrame {
                 new Insets(10, 10, 10, 10), 0, 0));
 
         panel.add(urlTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 1.0,
+                GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
+                new Insets(10, 10, 10, 10), 0, 0));
+
+        panel.add(siteCombobox, new GridBagConstraints(2, 0, 1, 1, 1.0, 1.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(10, 10, 10, 10), 0, 0));
 
@@ -42,7 +49,18 @@ public class MainFrame extends JFrame {
 
         downloadButton.addActionListener(e -> {
             try {
-                Downloader.saveImage(urlTextField.getText());
+                Site selectedSite = (Site) siteCombobox.getSelectedItem();
+                String url = urlTextField.getText();
+                switch (selectedSite) {
+                    case TRACKIRDOWN:
+                        Downloader.saveTrackitdown(url);
+                        break;
+                    case MUXIV:
+                        Downloader.saveMuxiv(url);
+                        break;
+                    default:
+                        break;
+                }
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(null, ex.getClass() + System.lineSeparator() + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 return;
